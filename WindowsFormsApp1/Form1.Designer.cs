@@ -68,7 +68,7 @@ namespace WindowsFormsApp1
             // 
             this.button1.BackColor = System.Drawing.Color.Red;
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button1.Location = new System.Drawing.Point(1103, 31);
+            this.button1.Location = new System.Drawing.Point(1192, 13);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(200, 55);
             this.button1.TabIndex = 0;
@@ -97,7 +97,7 @@ namespace WindowsFormsApp1
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button2.Location = new System.Drawing.Point(506, 51);
+            this.button2.Location = new System.Drawing.Point(461, 60);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(143, 45);
             this.button2.TabIndex = 4;
@@ -129,7 +129,7 @@ namespace WindowsFormsApp1
             // button3
             // 
             this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button3.Location = new System.Drawing.Point(19, 51);
+            this.button3.Location = new System.Drawing.Point(12, 60);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(180, 45);
             this.button3.TabIndex = 7;
@@ -142,7 +142,7 @@ namespace WindowsFormsApp1
             this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(12, 111);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(663, 439);
+            this.listView1.Size = new System.Drawing.Size(663, 522);
             this.listView1.TabIndex = 8;
             this.listView1.UseCompatibleStateImageBehavior = false;
             // 
@@ -150,7 +150,7 @@ namespace WindowsFormsApp1
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label4.Location = new System.Drawing.Point(12, 9);
+            this.label4.Location = new System.Drawing.Point(5, 11);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(217, 37);
             this.label4.TabIndex = 9;
@@ -215,10 +215,10 @@ namespace WindowsFormsApp1
             // textBox8
             // 
             this.textBox8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox8.Location = new System.Drawing.Point(1077, 287);
+            this.textBox8.Location = new System.Drawing.Point(1077, 290);
             this.textBox8.Multiline = true;
             this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(219, 315);
+            this.textBox8.Size = new System.Drawing.Size(315, 343);
             this.textBox8.TabIndex = 14;
             // 
             // textBox10
@@ -383,7 +383,7 @@ namespace WindowsFormsApp1
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.BackColor = System.Drawing.Color.SkyBlue;
             this.ClientSize = new System.Drawing.Size(1404, 674);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.label15);

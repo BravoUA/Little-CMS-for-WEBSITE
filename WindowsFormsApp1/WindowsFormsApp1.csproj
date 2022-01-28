@@ -71,12 +71,6 @@
     <Compile Include="Delete.Designer.cs">
       <DependentUpon>Delete.cs</DependentUpon>
     </Compile>
-    <Compile Include="EditDB.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EditDB.Designer.cs">
-      <DependentUpon>EditDB.cs</DependentUpon>
-    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -93,9 +87,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Delete.resx">
       <DependentUpon>Delete.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EditDB.resx">
-      <DependentUpon>EditDB.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

@@ -20,6 +20,13 @@ namespace WindowsFormsApp1
             InitializeComponent();
         }
 
+        public SQLiteDataAdapter ObjDataAdapter;
+        DataSet dataSet = new DataSet();
+        ImageList img = new ImageList();
+
+        string[] ImgName;
+        string[] ImgNamePaths;
+        string dbPath = "C:\\AnnalandBD\\ALDB.db";
         string HadImg;
         string HadImgPath;
 
@@ -29,12 +36,24 @@ namespace WindowsFormsApp1
 
         SQLiteConnection ObjConnection;
         public SQLiteCommand ObjCommand;
-        public SQLiteDataAdapter ObjDataAdapter;
-        DataSet dataSet = new DataSet();
-        ImageList img = new ImageList();
 
-        string[] ImgName;
-        string[] ImgNamePaths;
+        private void button6_Click(object sender, EventArgs e)
+        {
+
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://sa246943.ftp.tools/" + "ALDB.db");
+            request.UseBinary = true;
+            request.Method = WebRequestMethods.Ftp.UploadFile;
+            request.Credentials = new NetworkCredential("sa246943_alws", "mNC6Eix648hD");
+            // StreamReader rdr = new StreamReader(sFileName);
+            byte[] fileData = File.ReadAllBytes(dbPath);
+
+            // rdr.Close();
+            request.ContentLength = fileData.Length;
+            Stream reqStream = request.GetRequestStream();
+            reqStream.Write(fileData, 0, fileData.Length);
+            reqStream.Close();
+        }
+
 
         private void button5_Click(object sender, EventArgs e)
         {
@@ -73,7 +92,7 @@ namespace WindowsFormsApp1
                 dataGridView1.Refresh();
                 dataSet.Clear();
                 try {
-                ObjConnection = new SQLiteConnection("Data Source=ALDB.db;");
+                
                 ObjCommand = new SQLiteCommand("INSERT OR REPLACE INTO Machinery (Name, Model, Year, Type, Working_hours, Power, Mass, Text, State, Price, FildType, IDM, Sale, id) VALUES('" + Name + "','" + Model + "','" + Year + "','" + Type + "','" + Working_hours + "','" + Power + "','" + Mass + "','" + Text + "','" + State + "','" + Price + "','" + FildType + "','" + IDM + "',' 0','" + id + "')", ObjConnection);
                 ObjCommand.Connection.Open(); ObjCommand.ExecuteNonQuery(); ObjCommand.Connection.Close();
                 dataGridView1.ReadOnly = true;
@@ -92,8 +111,6 @@ namespace WindowsFormsApp1
                 button5.Visible = false;
             }
         }
-
-
 
         private void Delete_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -168,7 +185,7 @@ namespace WindowsFormsApp1
             dataGridView1.ReadOnly = false;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.CellSelect;
             
-            ObjConnection = new SQLiteConnection("Data Source=ALDB.db;");
+
             ObjCommand = new SQLiteCommand("SELECT * FROM Machinery where id = '"+ DeleteId + "'", ObjConnection);
             ObjCommand.CommandType = CommandType.Text; ObjDataAdapter = new SQLiteDataAdapter(ObjCommand);
             ObjDataAdapter.Fill(dataSet, "Machinery");
@@ -177,48 +194,15 @@ namespace WindowsFormsApp1
         
             
             DeleteIdBUT = 1;
-            if (dataGridView1.SelectedColumns.Count == 7) {
-
-                EditDB edit = new EditDB();
-                edit.Show();
-
-
-            }
-            
+           
 
         }
 
    
         private void Delete_Load(object sender, EventArgs e)
         {
-            /*  FtpWebRequest request =(FtpWebRequest)WebRequest.Create("ftp://sa246943_ftp@sa246943.ftp.tools:21/annaland.test/www/ALDB.db");
-            request.Credentials = new NetworkCredential("sa246943_ftp", "Y35rcK1Z5h");
-            request.Method = WebRequestMethods.Ftp.DownloadFile;
-
-            using (Stream ftpStream = request.GetResponse().GetResponseStream())
-            using (Stream fileStream = File.Create(@"C:\DOOOOOO\ALDB.db"))
-            {
-                ftpStream.CopyTo(fileStream);
-            }*/
-
-
-            /*  FtpWebRequest request =(FtpWebRequest)WebRequest.Create("ftp://sa246943_ftp@sa246943.ftp.tools:21/annaland.test/www/ALDB.db");
-          request.Credentials = new NetworkCredential("sa246943_ftp", "Y35rcK1Z5h");
-          request.Method = WebRequestMethods.Ftp.DownloadFile;
-
-          using (Stream ftpStream = request.GetResponse().GetResponseStream())
-          using (Stream fileStream = File.Create(@"C:\DOOOOOO\ALDB.db"))
-          {
-              ftpStream.CopyTo(fileStream);
-          }*/
-
-         
-
-
-
-
-
-
+            string connString = string.Format("Data Source={0}", dbPath);
+            ObjConnection = new SQLiteConnection(connString);
 
         }
         private void button3_Click(object sender, EventArgs e)
@@ -226,8 +210,8 @@ namespace WindowsFormsApp1
             dataGridView1.DataSource = null;
             dataGridView1.Refresh();
             dataSet.Clear();
-            ObjConnection = new SQLiteConnection("Data Source=ALDB.db;");
-            ObjCommand = new SQLiteCommand("SELECT Name,Model,Year,Price,id,FildType FROM Technic ORDER BY Name ASC", ObjConnection);
+     
+            ObjCommand = new SQLiteCommand("SELECT Name,Model,Year,Price,id,FildType FROM Technic ORDER BY id DESC", ObjConnection);
             ObjCommand.CommandType = CommandType.Text; ObjDataAdapter = new SQLiteDataAdapter(ObjCommand);
             ObjDataAdapter.Fill(dataSet, "Technic");
             DataTable AllTr = dataSet.Tables["Technic"];
@@ -243,8 +227,8 @@ namespace WindowsFormsApp1
             dataGridView1.DataSource = null;
             dataGridView1.Refresh();
             dataSet.Clear();
-            ObjConnection = new SQLiteConnection("Data Source=ALDB.db;");
-            ObjCommand = new SQLiteCommand("SELECT Name,Model,Year,Price,id,FildType FROM Machinery ORDER BY Name ASC", ObjConnection);
+            
+            ObjCommand = new SQLiteCommand("SELECT Name,Model,Year,Price,id,FildType FROM Machinery ORDER BY id DESC", ObjConnection);
             ObjCommand.CommandType = CommandType.Text; ObjDataAdapter = new SQLiteDataAdapter(ObjCommand);
             ObjDataAdapter.Fill(dataSet, "Machinery");
             DataTable AllTr = dataSet.Tables["Machinery"];
@@ -256,7 +240,7 @@ namespace WindowsFormsApp1
         {
             button1.Visible = false;
             button4.Visible = false;
-            ObjConnection = new SQLiteConnection("Data Source=ALDB.db;");
+           
             if (dataGridView1.SelectedCells.Count > 0)
             {
                 int selectedrowindex = dataGridView1.SelectedCells[0].RowIndex;
@@ -273,7 +257,7 @@ namespace WindowsFormsApp1
                 ObjCommand.Connection.Open(); ObjCommand.ExecuteNonQuery(); ObjCommand.Connection.Close();
                 dataGridView1.DataSource = null;
                 dataGridView1.Refresh();
-                ObjConnection = new SQLiteConnection("Data Source=ALDB.db;");
+                
                 this.Refresh();
 
             }
@@ -286,7 +270,7 @@ namespace WindowsFormsApp1
                 ObjCommand.Connection.Open(); ObjCommand.ExecuteNonQuery(); ObjCommand.Connection.Close();
                 dataGridView1.DataSource = null;
                 dataGridView1.Refresh();
-                ObjConnection = new SQLiteConnection("Data Source=ALDB.db;");
+             
                 this.Refresh();
 
             }
@@ -294,32 +278,5 @@ namespace WindowsFormsApp1
 
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-        private FtpWebRequest CreateFtpWebRequest(string ftpDirectoryPath, string userName, string password, bool keepAlive = false)
-        {
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(new Uri(ftpDirectoryPath));
-
-            //Set proxy to null. Under current configuration if this option is not set then the proxy that is used will get an html response from the web content gateway (firewall monitoring system)
-            request.Proxy = null;
-
-            request.UsePassive = true;
-            request.UseBinary = true;
-            request.KeepAlive = keepAlive;
-
-            request.Credentials = new NetworkCredential(userName, password);
-
-            return request;
-        }
     }
 }

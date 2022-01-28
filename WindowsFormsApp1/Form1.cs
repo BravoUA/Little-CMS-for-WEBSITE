@@ -21,7 +21,7 @@ namespace WindowsFormsApp1
         }
         string puth;
 
-        SQLiteConnection ObjConnection = new SQLiteConnection("Data Source=ALDB.db;");
+        SQLiteConnection ObjConnection;
         public SQLiteCommand ObjCommand;
         public SQLiteDataAdapter ObjDataAdapter;
         DataSet dataSet = new DataSet();
@@ -37,46 +37,27 @@ namespace WindowsFormsApp1
         string[] ImgNamePaths;
         ImageList img = new ImageList();
 
-
-
-
-
-
-
+        string dbPath = "C:\\AnnalandBD\\ALDB.db";
+      
 
         private void Form1_Load(object sender, EventArgs e)
         {
+
+
+            comboBox1.SelectedIndex = 0;
+            comboBox2.SelectedIndex = 0;
             listView1.View = View.Details;
             listView1.Columns.Add("CONTENT IMGES",150);
             listView1.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.HeaderSize);
             this.progressBar1.Maximum = 100;
 
-            /*  FtpWebRequest request =(FtpWebRequest)WebRequest.Create("ftp://sa246943_ftp@sa246943.ftp.tools:21/annaland.test/www/ALDB.db");
-               request.Credentials = new NetworkCredential("sa246943_ftp", "Y35rcK1Z5h");
-               request.Method = WebRequestMethods.Ftp.DownloadFile;
+          
+            
 
-               using (Stream ftpStream = request.GetResponse().GetResponseStream())
-               using (Stream fileStream = File.Create(@"C:\DOOOOOO\ALDB.db"))
-               {
-                   ftpStream.CopyTo(fileStream);
-               }*/
-
-        }
-
-        private FtpWebRequest CreateFtpWebRequest(string ftpDirectoryPath, string userName, string password, bool keepAlive = false)
-        {
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(new Uri(ftpDirectoryPath));
-
-            //Set proxy to null. Under current configuration if this option is not set then the proxy that is used will get an html response from the web content gateway (firewall monitoring system)
-            request.Proxy = null;
-
-            request.UsePassive = true;
-            request.UseBinary = true;
-            request.KeepAlive = keepAlive;
-
-            request.Credentials = new NetworkCredential(userName, password);
-
-            return request;
+            
+            string connString = string.Format("Data Source={0}", dbPath);
+            ObjConnection = new SQLiteConnection(connString);
+            
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -121,10 +102,10 @@ namespace WindowsFormsApp1
             try
             {
 
-                 FtpWebRequest req = (FtpWebRequest)WebRequest.Create("ftp://sa246943_ftp@sa246943.ftp.tools:21/annaland.test/www/img/HadImg/"+HadImg);
+                 FtpWebRequest req = (FtpWebRequest)WebRequest.Create("ftp://sa246943.ftp.tools/img/HadImg/" + HadImg);
                  req.UseBinary = true;
                  req.Method = WebRequestMethods.Ftp.UploadFile;
-                 req.Credentials = new NetworkCredential("sa246943_ftp", "Y35rcK1Z5h");
+                 req.Credentials = new NetworkCredential("sa246943_alws", "mNC6Eix648hD");
                 // StreamReader rdr = new StreamReader(sFileName);
                  byte[] fileData = File.ReadAllBytes(HadImgPath);
 
@@ -148,10 +129,10 @@ namespace WindowsFormsApp1
                 progressBar1.Value = 60;
                 for (int i = 0; i < ImgName.Length;i++) {
                     
-                    req = (FtpWebRequest)WebRequest.Create("ftp://sa246943_ftp@sa246943.ftp.tools:21/annaland.test/www/img/imges/" + ImgName[i]);
+                    req = (FtpWebRequest)WebRequest.Create("ftp://sa246943.ftp.tools/img/imges/" + ImgName[i]);
                     req.UseBinary = true;
                     req.Method = WebRequestMethods.Ftp.UploadFile;
-                    req.Credentials = new NetworkCredential("sa246943_ftp", "Y35rcK1Z5h");
+                    req.Credentials = new NetworkCredential("sa246943_alws", "mNC6Eix648hD");
                     // StreamReader rdr = new StreamReader(sFileName);
                     fileData = File.ReadAllBytes(ImgNamePaths[i]);
                     // rdr.Close();
@@ -169,27 +150,34 @@ namespace WindowsFormsApp1
 
                     id = 1 + int.Parse(dataSet.Tables["id"].Rows[0][0].ToString());
 
-                    ObjCommand = new SQLiteCommand("INSERT INTO MachinesImg VALUES('" + webimgpath + "','" + id + "','" + ImgName[i] + "','0')", ObjConnection);
+                    dataSet.Clear();
+                    ObjCommand = new SQLiteCommand("SELECT idimg FROM MachinesImg ORDER BY idimg DESC LIMIT 1", ObjConnection);
+                    ObjCommand.CommandType = CommandType.Text; ObjDataAdapter = new SQLiteDataAdapter(ObjCommand);
+                    ObjDataAdapter.Fill(dataSet, "idimg");
+
+                    int idimg = 1 + int.Parse(dataSet.Tables["idimg"].Rows[0][0].ToString());
+
+
+                    ObjCommand = new SQLiteCommand("INSERT INTO MachinesImg VALUES('" + webimgpath + "','"+ idimg + "','" + id + "','" + ImgName[i] + "','0')", ObjConnection);
                     ObjCommand.Connection.Open(); ObjCommand.ExecuteNonQuery(); ObjCommand.Connection.Close();
                 }
                 progressBar1.Value = 90;
 
-                /*   FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://sa246943_ftp@sa246943.ftp.tools:21/annaland.test/www/");
+                 
+                FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://sa246943.ftp.tools/" + "ALDB.db");
+                request.UseBinary = true;
+                request.Method = WebRequestMethods.Ftp.UploadFile;
+                request.Credentials = new NetworkCredential("sa246943_alws", "mNC6Eix648hD");
+                // StreamReader rdr = new StreamReader(sFileName);
+                fileData = File.ReadAllBytes(dbPath);
 
-                   request.Method = WebRequestMethods.Ftp.UploadFile;
-                   request.Credentials = new NetworkCredential("sa246943_ftp", "Y35rcK1Z5h");
-                   // Copy the contents of the file to the request stream.  
-                   StreamReader sourceStream = new StreamReader(sFileName);
-                   byte[] fileContents = File.ReadAllBytes(sFileName);
-                   sourceStream.Close();
-                   request.ContentLength = fileContents.Length;
-                   Stream requestStream = request.GetRequestStream();
-                   requestStream.Write(fileContents, 0, fileContents.Length);
-                   requestStream.Close();
-                   FtpWebResponse response = (FtpWebResponse)request.GetResponse();
-                   label1.Text = ("Upload File Complete, status {0}" + response.StatusDescription).ToString();
+                // rdr.Close();
+                request.ContentLength = fileData.Length;
+                reqStream = request.GetRequestStream();
+                reqStream.Write(fileData, 0, fileData.Length);
+                reqStream.Close();
+                
 
-                   response.Close();*/
             }
             catch (WebException et)
             {
@@ -203,10 +191,12 @@ namespace WindowsFormsApp1
             }
             textBox1.Text = "";textBox2.Text = "";textBox3.Text = "";textBox4.Text = "";textBox5.Text = "";textBox6.Text = "";textBox7.Text = "";textBox8.Text = "";comboBox1.Text = "";comboBox2.Text = "";textBox10.Text = "";listView1.Clear();
             progressBar1.Value = 100;
+            ObjConnection.Close();
 
-
+          
+            MessageBox.Show("upload is complete");
+            this.Close();
         }
-
         private void button2_Click(object sender, EventArgs e)
         {
             MessageBox.Show("IMG Resolution mast be 330x270");
@@ -228,7 +218,6 @@ namespace WindowsFormsApp1
 
 
         }
-
         private void button3_Click(object sender, EventArgs e)
         {
             OpenFileDialog choofdlog = new OpenFileDialog();
