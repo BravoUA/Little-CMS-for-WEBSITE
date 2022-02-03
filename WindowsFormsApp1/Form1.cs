@@ -74,6 +74,7 @@ namespace WindowsFormsApp1
         }
         private void button1_Click(object sender, EventArgs e)
         {
+
             if (comboBox3.SelectedIndex == 0) {
                 Name = textBox1.Text; Model = textBox2.Text; Year = textBox3.Text; Type = textBox4.Text; Working_hours = textBox5.Text; Power = textBox6.Text; Mass = textBox7.Text;
                 Text = textBox8.Text; State = comboBox2.Text; Price = int.Parse(textBox10.Text); FildType = comboBox1.SelectedIndex + 1;
