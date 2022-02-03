@@ -67,12 +67,18 @@ namespace WindowsFormsApp1
         {
             string path1 = @"C:\\AnnalandBD\\ALDB.db";
             string path2 = @"C:\\AnnalandBD\\oldDB\\ALDB.db";
-
+           
             try
             {
                 if (File.Exists(path2))
+                {
                     File.Delete(path2);
                     File.Move(path1, path2);
+                }
+                else {
+                    File.Move(path1, path2);
+                }
+                    
 
             }
             catch (IOException er)

@@ -29,6 +29,7 @@ namespace WindowsFormsApp1
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -61,6 +62,7 @@ namespace WindowsFormsApp1
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.label15 = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -163,6 +165,7 @@ namespace WindowsFormsApp1
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(200, 26);
             this.textBox1.TabIndex = 10;
+            this.textBox1.Visible = false;
             // 
             // textBox2
             // 
@@ -171,6 +174,7 @@ namespace WindowsFormsApp1
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(200, 26);
             this.textBox2.TabIndex = 11;
+            this.textBox2.Visible = false;
             // 
             // textBox3
             // 
@@ -179,6 +183,7 @@ namespace WindowsFormsApp1
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(200, 26);
             this.textBox3.TabIndex = 12;
+            this.textBox3.Visible = false;
             // 
             // textBox4
             // 
@@ -187,6 +192,7 @@ namespace WindowsFormsApp1
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(200, 26);
             this.textBox4.TabIndex = 13;
+            this.textBox4.Visible = false;
             // 
             // textBox5
             // 
@@ -195,6 +201,7 @@ namespace WindowsFormsApp1
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(200, 26);
             this.textBox5.TabIndex = 17;
+            this.textBox5.Visible = false;
             // 
             // textBox6
             // 
@@ -203,6 +210,7 @@ namespace WindowsFormsApp1
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(200, 26);
             this.textBox6.TabIndex = 16;
+            this.textBox6.Visible = false;
             // 
             // textBox7
             // 
@@ -211,6 +219,7 @@ namespace WindowsFormsApp1
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(200, 26);
             this.textBox7.TabIndex = 15;
+            this.textBox7.Visible = false;
             // 
             // textBox8
             // 
@@ -220,6 +229,7 @@ namespace WindowsFormsApp1
             this.textBox8.Name = "textBox8";
             this.textBox8.Size = new System.Drawing.Size(315, 343);
             this.textBox8.TabIndex = 14;
+            this.textBox8.Visible = false;
             // 
             // textBox10
             // 
@@ -228,6 +238,7 @@ namespace WindowsFormsApp1
             this.textBox10.Name = "textBox10";
             this.textBox10.Size = new System.Drawing.Size(200, 26);
             this.textBox10.TabIndex = 18;
+            this.textBox10.Visible = false;
             // 
             // label5
             // 
@@ -238,6 +249,7 @@ namespace WindowsFormsApp1
             this.label5.Size = new System.Drawing.Size(55, 20);
             this.label5.TabIndex = 20;
             this.label5.Text = "Name";
+            this.label5.Visible = false;
             // 
             // label6
             // 
@@ -248,6 +260,7 @@ namespace WindowsFormsApp1
             this.label6.Size = new System.Drawing.Size(57, 20);
             this.label6.TabIndex = 21;
             this.label6.Text = "Model";
+            this.label6.Visible = false;
             // 
             // label7
             // 
@@ -258,6 +271,7 @@ namespace WindowsFormsApp1
             this.label7.Size = new System.Drawing.Size(47, 20);
             this.label7.TabIndex = 22;
             this.label7.Text = "Year";
+            this.label7.Visible = false;
             // 
             // label8
             // 
@@ -268,6 +282,7 @@ namespace WindowsFormsApp1
             this.label8.Size = new System.Drawing.Size(47, 20);
             this.label8.TabIndex = 23;
             this.label8.Text = "Type";
+            this.label8.Visible = false;
             // 
             // label9
             // 
@@ -278,6 +293,7 @@ namespace WindowsFormsApp1
             this.label9.Size = new System.Drawing.Size(124, 20);
             this.label9.TabIndex = 24;
             this.label9.Text = "Working hours";
+            this.label9.Visible = false;
             // 
             // label10
             // 
@@ -288,6 +304,7 @@ namespace WindowsFormsApp1
             this.label10.Size = new System.Drawing.Size(58, 20);
             this.label10.TabIndex = 29;
             this.label10.Text = "Power";
+            this.label10.Visible = false;
             // 
             // label11
             // 
@@ -298,6 +315,7 @@ namespace WindowsFormsApp1
             this.label11.Size = new System.Drawing.Size(51, 20);
             this.label11.TabIndex = 28;
             this.label11.Text = "Mass";
+            this.label11.Visible = false;
             // 
             // label12
             // 
@@ -308,6 +326,7 @@ namespace WindowsFormsApp1
             this.label12.Size = new System.Drawing.Size(43, 20);
             this.label12.TabIndex = 27;
             this.label12.Text = "Text";
+            this.label12.Visible = false;
             // 
             // label13
             // 
@@ -318,6 +337,7 @@ namespace WindowsFormsApp1
             this.label13.Size = new System.Drawing.Size(53, 20);
             this.label13.TabIndex = 26;
             this.label13.Text = "State";
+            this.label13.Visible = false;
             // 
             // label14
             // 
@@ -328,6 +348,7 @@ namespace WindowsFormsApp1
             this.label14.Size = new System.Drawing.Size(49, 20);
             this.label14.TabIndex = 25;
             this.label14.Text = "Price";
+            this.label14.Visible = false;
             // 
             // comboBox1
             // 
@@ -346,6 +367,7 @@ namespace WindowsFormsApp1
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(201, 28);
             this.comboBox1.TabIndex = 30;
+            this.comboBox1.Visible = false;
             // 
             // comboBox2
             // 
@@ -360,6 +382,7 @@ namespace WindowsFormsApp1
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(199, 28);
             this.comboBox2.TabIndex = 31;
+            this.comboBox2.Visible = false;
             // 
             // label15
             // 
@@ -370,6 +393,7 @@ namespace WindowsFormsApp1
             this.label15.Size = new System.Drawing.Size(96, 20);
             this.label15.TabIndex = 32;
             this.label15.Text = "Categories";
+            this.label15.Visible = false;
             // 
             // progressBar1
             // 
@@ -378,6 +402,19 @@ namespace WindowsFormsApp1
             this.progressBar1.Size = new System.Drawing.Size(1380, 23);
             this.progressBar1.TabIndex = 33;
             // 
+            // comboBox3
+            // 
+            this.comboBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Items.AddRange(new object[] {
+            "Трактори-Спецтехніка-Збиральна техніка",
+            "Інша С/Г Техніка"});
+            this.comboBox3.Location = new System.Drawing.Point(1018, 253);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(374, 28);
+            this.comboBox3.TabIndex = 34;
+            this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -385,6 +422,7 @@ namespace WindowsFormsApp1
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.SkyBlue;
             this.ClientSize = new System.Drawing.Size(1404, 674);
+            this.Controls.Add(this.comboBox3);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.comboBox2);
@@ -417,6 +455,7 @@ namespace WindowsFormsApp1
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -461,6 +500,7 @@ namespace WindowsFormsApp1
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ComboBox comboBox3;
     }
 }
 

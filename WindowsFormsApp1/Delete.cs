@@ -110,11 +110,13 @@ namespace WindowsFormsApp1
             
                 button5.Visible = false;
             }
+            ObjConnection.Close();
         }
 
         private void Delete_FormClosed(object sender, FormClosedEventArgs e)
         {
-          
+            ObjConnection.Close();
+            
         }
 
         private void dataGridView1_DoubleClick(object sender, EventArgs e)
@@ -194,7 +196,7 @@ namespace WindowsFormsApp1
         
             
             DeleteIdBUT = 1;
-           
+            ObjConnection.Close();
 
         }
 
@@ -203,6 +205,7 @@ namespace WindowsFormsApp1
         {
             string connString = string.Format("Data Source={0}", dbPath);
             ObjConnection = new SQLiteConnection(connString);
+            
 
         }
         private void button3_Click(object sender, EventArgs e)
@@ -217,6 +220,7 @@ namespace WindowsFormsApp1
             DataTable AllTr = dataSet.Tables["Technic"];
             dataGridView1.DataSource = AllTr;
             DeleteIdBUT = 2;
+            ObjConnection.Close();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -234,6 +238,7 @@ namespace WindowsFormsApp1
             DataTable AllTr = dataSet.Tables["Machinery"];
             dataGridView1.DataSource = AllTr;
             DeleteIdBUT = 1;
+            ObjConnection.Close();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -275,7 +280,7 @@ namespace WindowsFormsApp1
 
             }
 
-
+            ObjConnection.Close();
         }
 
     }
