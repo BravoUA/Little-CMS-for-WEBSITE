@@ -95,6 +95,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="ftpConnect.cs" />
     <Compile Include="Home.cs">
       <SubType>Form</SubType>
     </Compile>

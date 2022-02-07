@@ -83,7 +83,7 @@ namespace WindowsFormsApp1
             }
             catch (IOException er)
             {
-                MessageBox.Show("The renaming failed: {0}", er.ToString());
+                MessageBox.Show(er.Message.ToString());
             }
         }
     }
