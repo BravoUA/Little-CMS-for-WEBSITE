@@ -27,6 +27,8 @@ namespace WindowsFormsApp1
                 if (Categories == 1)
                 {
                     dataSet.Clear();
+                    dataSet.Dispose();
+                    
 
                     ObjCommand = new SQLiteCommand("SELECT Name,Model,Year,Price,id,FildType FROM Machinery ORDER BY id DESC", ObjConnection);
                     ObjCommand.CommandType = CommandType.Text;
@@ -39,6 +41,7 @@ namespace WindowsFormsApp1
                 else if (Categories == 2)
                 {
                     dataSet.Clear();
+                    dataSet.Dispose();
                     ObjCommand = new SQLiteCommand("SELECT Name,Model,Year,Price,id,FildType FROM Technic ORDER BY id DESC", ObjConnection);
                     ObjCommand.CommandType = CommandType.Text; ObjDataAdapter = new SQLiteDataAdapter(ObjCommand);
                     ObjDataAdapter.Fill(dataSet, "Technic");
@@ -111,7 +114,7 @@ namespace WindowsFormsApp1
             {
                 if (Categories == 1)
                 {
-                    ObjCommand = new SQLiteCommand("INSERT OR REPLACE INTO Machinery (Name, Model, Year, Type, Working_hours, Power, Mass, Text, State, Price, FildType, IDM, Sale, id) VALUES('" + info[0] + "','" + info[1] + "','" + info[2] + "','" + info[3] + "','" + info[4] + "','" + info[5] + "','" + info[6] + "','" + info[7] + "','" + info[8] + "','" + info[9] + "','" + info[10] + "','" + info[11] + "'," + info[12] + ",'" + info[13] + "')", ObjConnection);
+                    ObjCommand = new SQLiteCommand("INSERT OR REPLACE INTO Machinery (Name, Model, Year, Type, Working_hours, Power, Mass, Text, State, Price, FildType, IDM, Sale, id) VALUES('" + info[0] + "','" + info[1] + "','" + info[2] + "','" + info[3] + "','" + info[4] + "','" + info[5] + "','" + info[6] + "','" + info[7] + "','" + info[8] + "','" + info[9] + "','" + info[10] + "','" + info[11] + "'," + info[12] + "," + info[13] + ")", ObjConnection);
                     ObjCommand.Connection.Open(); ObjCommand.ExecuteNonQuery(); ObjCommand.Connection.Close(); ObjCommand.Dispose();
 
                 }

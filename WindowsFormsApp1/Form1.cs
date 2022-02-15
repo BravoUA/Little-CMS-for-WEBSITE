@@ -96,7 +96,8 @@ namespace WindowsFormsApp1
                 textBox1.Text = ""; textBox2.Text = ""; textBox3.Text = ""; textBox4.Text = ""; textBox5.Text = ""; textBox6.Text = ""; textBox7.Text = ""; textBox8.Text = ""; comboBox1.Text = ""; comboBox2.Text = ""; textBox10.Text = ""; listView1.Clear();
                 MessageBox.Show("upload is complete");
                 this.Close();
-            } else if (comboBox3.SelectedIndex == 1) {
+            } else
+            if (comboBox3.SelectedIndex == 1) {
 
                 content.Add(textBox1.Text);     //Nmae
                 content.Add(textBox2.Text);     //Model

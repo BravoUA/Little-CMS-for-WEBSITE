@@ -38,6 +38,8 @@ namespace WindowsFormsApp1
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
+           
+            
             
             dataGridView1.DataSource = null;
             dataGridView1.Refresh();
@@ -46,11 +48,14 @@ namespace WindowsFormsApp1
             {
                 DataTable AllTr = DBCON.dataSet.Tables["Machinery"];
                 dataGridView1.DataSource = AllTr;
+               
             }
             else if (Categories == 2)
             {
                 DataTable AllTr = DBCON.dataSet.Tables["Technic"];
+               
                 dataGridView1.DataSource = AllTr;
+               
             }
             
 
@@ -222,39 +227,37 @@ namespace WindowsFormsApp1
 
         private void button4_Click(object sender, EventArgs e)
         {
-            button1.Visible = false;
-            button2.Visible = false;
-            button3.Visible = false;
-            button4.Visible = false;
-            button5.Visible = true;
 
-            if (dataGridView1.SelectedCells.Count > 0)
-            {
-                int selectedrowindex = dataGridView1.SelectedCells[0].RowIndex;
-                DataGridViewRow selectedRow = dataGridView1.Rows[selectedrowindex];
-                string cellValue = Convert.ToString(selectedRow.Cells["id"].Value);
-                DeleteId = int.Parse(cellValue);
-            }
 
-            dataGridView1.DataSource = null;
-            dataGridView1.Refresh();
+           
 
             
-            dataGridView1.MultiSelect = false;
-            dataGridView1.ReadOnly = false;
-            dataGridView1.SelectionMode = DataGridViewSelectionMode.CellSelect;
 
-            DBCON.editeDB(Categories, DeleteId);
-
+           
+            Edite EditForm = new Edite();
             if (Categories == 1)
             {
-                DataTable AllTr = DBCON.dataSet.Tables["Machinery"];
-                dataGridView1.DataSource = AllTr;
+                if (dataGridView1.SelectedCells.Count > 0)
+                {
+                    int selectedrowindex = dataGridView1.SelectedCells[0].RowIndex;
+                    DataGridViewRow selectedRow = dataGridView1.Rows[selectedrowindex];
+                    string cellValue = Convert.ToString(selectedRow.Cells["id"].Value);
+                    DeleteId = int.Parse(cellValue);
+                }
+                DBCON.editeDB(Categories, DeleteId);
+
+                EditForm.DS = DBCON.dataSet;
+                EditForm.Categories = Categories;
+                DBCON.dataSet.Dispose();
+                EditForm.Show();
+                this.Close();
+
             }
             else if (Categories == 2)
             {
-                DataTable AllTr = DBCON.dataSet.Tables["Technic"];
-                dataGridView1.DataSource = AllTr;
+                EditForm.DS = DBCON.dataSet;
+                EditForm.Categories = Categories;
+                EditForm.Show();
             }
             
         

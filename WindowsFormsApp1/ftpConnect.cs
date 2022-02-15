@@ -58,7 +58,6 @@ namespace WindowsFormsApp1
         {
             try
             {
-
                 request = (FtpWebRequest)WebRequest.Create(ftpString + "ALDB_OLD.db");
                 request.UseBinary = true;
                 request.Method = WebRequestMethods.Ftp.DeleteFile;

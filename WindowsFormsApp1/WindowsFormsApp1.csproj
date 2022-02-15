@@ -90,6 +90,12 @@
     <Compile Include="Delete.Designer.cs">
       <DependentUpon>Delete.cs</DependentUpon>
     </Compile>
+    <Compile Include="Edite.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Edite.Designer.cs">
+      <DependentUpon>Edite.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -107,6 +113,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Delete.resx">
       <DependentUpon>Delete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Edite.resx">
+      <DependentUpon>Edite.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
