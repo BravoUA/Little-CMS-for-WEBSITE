@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SQLite;
+using WindowsFormsApp1;
 
 namespace WindowsFormsApp1
 {
@@ -20,105 +21,161 @@ namespace WindowsFormsApp1
             InitializeComponent();
         }
 
-        public SQLiteDataAdapter ObjDataAdapter;
+    
         DataSet dataSet = new DataSet();
         ImageList img = new ImageList();
-
+        dbConnect DBCON = new dbConnect(dbPath);
         string[] ImgName;
         string[] ImgNamePaths;
-        string dbPath = "C:\\AnnalandBD\\ALDB.db";
+        static string dbPath = "C:\\AnnalandBD\\ALDB.db";
         string HadImg;
         string HadImgPath;
+        int Categories = 0;
 
         string Name, Model, Year, Type, Working_hours, Power, Mass, Text, State;
 
         int Price, FildType, IDM, Sale, id, DeleteId , DeleteIdBUT;
 
-        SQLiteConnection ObjConnection;
-        public SQLiteCommand ObjCommand;
-
-        private void button6_Click(object sender, EventArgs e)
+        private void textBox1_TextChanged(object sender, EventArgs e)
         {
+            
+            dataGridView1.DataSource = null;
+            dataGridView1.Refresh();
+            DBCON.FindByName(textBox1.Text, Categories);
+            if (Categories == 1)
+            {
+                DataTable AllTr = DBCON.dataSet.Tables["Machinery"];
+                dataGridView1.DataSource = AllTr;
+            }
+            else if (Categories == 2)
+            {
+                DataTable AllTr = DBCON.dataSet.Tables["Technic"];
+                dataGridView1.DataSource = AllTr;
+            }
+            
 
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://sa246943.ftp.tools/" + "ALDB.db");
-            request.UseBinary = true;
-            request.Method = WebRequestMethods.Ftp.UploadFile;
-            request.Credentials = new NetworkCredential("sa246943_alws", "mNC6Eix648hD");
-            // StreamReader rdr = new StreamReader(sFileName);
-            byte[] fileData = File.ReadAllBytes(dbPath);
-
-            // rdr.Close();
-            request.ContentLength = fileData.Length;
-            Stream reqStream = request.GetRequestStream();
-            reqStream.Write(fileData, 0, fileData.Length);
-            reqStream.Close();
         }
+
+     
+        
+
+
 
 
         private void button5_Click(object sender, EventArgs e)
         {
             button1.Visible = false;
             button4.Visible = false;
+            List<string> listChenges = new List<string>();
 
-            if (dataGridView1.SelectedCells[0].RowIndex < 2)
+            if (Categories == 1)
             {
-                try
+                if (dataGridView1.SelectedCells[0].RowIndex < 2)
                 {
-                    int selectedrowindex = dataGridView1.SelectedCells[0].RowIndex;
-                    DataGridViewRow selectedRow = dataGridView1.Rows[selectedrowindex];
-                    Name = Convert.ToString(selectedRow.Cells["Name"].Value);
-                    Model = Convert.ToString(selectedRow.Cells["Model"].Value);
-                    Year = Convert.ToString(selectedRow.Cells["Year"].Value);
-                    Type = Convert.ToString(selectedRow.Cells["Type"].Value);
-                    Working_hours = Convert.ToString(selectedRow.Cells["Working_hours"].Value);
-                    Power = Convert.ToString(selectedRow.Cells["Power"].Value);
-                    Mass = Convert.ToString(selectedRow.Cells["Mass"].Value);
-                    Text = Convert.ToString(selectedRow.Cells["Text"].Value);
-                    State = Convert.ToString(selectedRow.Cells["State"].Value);
-                    Price = int.Parse(Convert.ToString(selectedRow.Cells["Price"].Value));
-                    FildType = int.Parse(Convert.ToString(selectedRow.Cells["FildType"].Value));
-                    IDM = int.Parse(Convert.ToString(selectedRow.Cells["IDM"].Value));
-                    Sale = int.Parse(Convert.ToString(selectedRow.Cells["Sale"].Value));
-                    id = int.Parse(Convert.ToString(selectedRow.Cells["id"].Value));
-                }
-                catch (FormatException eror) {
-                    MessageBox.Show(eror.ToString());
-                }
-                
-                
+                    try
+                    {
+                        int selectedrowindex = dataGridView1.SelectedCells[0].RowIndex;
+                        DataGridViewRow selectedRow = dataGridView1.Rows[selectedrowindex];
+                        listChenges.Add(Convert.ToString(selectedRow.Cells["Name"].Value));
+                        listChenges.Add(Convert.ToString(selectedRow.Cells["Model"].Value));
+                        listChenges.Add(Convert.ToString(selectedRow.Cells["Year"].Value));
+                        listChenges.Add(Convert.ToString(selectedRow.Cells["Type"].Value));
+                        listChenges.Add(Convert.ToString(selectedRow.Cells["Working_hours"].Value));
+                        listChenges.Add(Convert.ToString(selectedRow.Cells["Power"].Value));
+                        listChenges.Add(Convert.ToString(selectedRow.Cells["Mass"].Value));
+                        listChenges.Add(Convert.ToString(selectedRow.Cells["Text"].Value));
+                        listChenges.Add(Convert.ToString(selectedRow.Cells["State"].Value));
+                        listChenges.Add(Convert.ToString(selectedRow.Cells["Price"].Value));
+                        listChenges.Add(Convert.ToString(selectedRow.Cells["FildType"].Value));
+                        listChenges.Add(Convert.ToString(selectedRow.Cells["IDM"].Value));
+                        listChenges.Add(Convert.ToString(selectedRow.Cells["Sale"].Value));
+                        listChenges.Add(Convert.ToString(selectedRow.Cells["id"].Value));
+
+                    }
+                    catch (FormatException eror)
+                    {
+                        MessageBox.Show(eror.ToString());
+                    }
+
+                    dataGridView1.DataSource = null;
+                    dataGridView1.Refresh();
+                    dataSet.Clear();
+                    try
+                    {
+
+                        DBCON.insertToDB(Categories, DeleteId, listChenges);
+                        dataGridView1.ReadOnly = true;
+                        dataGridView1.DataSource = null;
+                        dataGridView1.Refresh();
+                    }
+                    catch (SQLiteException eror)
+                    {
+                        MessageBox.Show("Виникла Помилка\n Не використовуйте Апостроф чи подвійний Апостроф\n Якщо вони потрібні поставте перед ними символ «\\»");
+                    }
 
 
-                dataGridView1.DataSource = null;
-                dataGridView1.Refresh();
-                dataSet.Clear();
-                try {
-                
-                ObjCommand = new SQLiteCommand("INSERT OR REPLACE INTO Machinery (Name, Model, Year, Type, Working_hours, Power, Mass, Text, State, Price, FildType, IDM, Sale, id) VALUES('" + Name + "','" + Model + "','" + Year + "','" + Type + "','" + Working_hours + "','" + Power + "','" + Mass + "','" + Text + "','" + State + "','" + Price + "','" + FildType + "','" + IDM + "',' 0','" + id + "')", ObjConnection);
-                ObjCommand.Connection.Open(); ObjCommand.ExecuteNonQuery(); ObjCommand.Connection.Close();
-                dataGridView1.ReadOnly = true;
-                dataGridView1.DataSource = null;
-                dataGridView1.Refresh();
-                }
-                catch(SQLiteException eror) {
-                    MessageBox.Show("Виникла Помилка\n Не використовуйте Апостроф чи подвійний Апостроф\n Якщо вони потрібні поставте перед ними символ «\\»");
-                }
 
+                    button2.Visible = true;
+                    button3.Visible = true;
 
-              
-                button2.Visible = true;
-                button3.Visible = true;
-            
-                button5.Visible = false;
+                    button5.Visible = false;
+                }
             }
-            ObjConnection.Close();
-        }
+            else if (Categories == 2)
+            {
+                if (dataGridView1.SelectedCells[0].RowIndex < 2)
+                {
+                    try
+                    {
+                        int selectedrowindex = dataGridView1.SelectedCells[0].RowIndex;
+                        DataGridViewRow selectedRow = dataGridView1.Rows[selectedrowindex];
+                        listChenges.Add(Convert.ToString(selectedRow.Cells["Name"].Value));
+                        listChenges.Add(Convert.ToString(selectedRow.Cells["Model"].Value));
+                        listChenges.Add(Convert.ToString(selectedRow.Cells["Year"].Value));
+                        listChenges.Add(Convert.ToString(selectedRow.Cells["Type"].Value));
+                        listChenges.Add(Convert.ToString(selectedRow.Cells["Mass"].Value));
+                        listChenges.Add(Convert.ToString(selectedRow.Cells["Text"].Value));
+                        listChenges.Add(Convert.ToString(selectedRow.Cells["State"].Value));
+                        listChenges.Add(Convert.ToString(selectedRow.Cells["Price"].Value));
+                        listChenges.Add(Convert.ToString(selectedRow.Cells["FildType"].Value));
+                        listChenges.Add(Convert.ToString(selectedRow.Cells["IDT"].Value));
+                        listChenges.Add(Convert.ToString(selectedRow.Cells["Sale"].Value));
+                        listChenges.Add(Convert.ToString(selectedRow.Cells["id"].Value));
 
-        private void Delete_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            ObjConnection.Close();
-            
-        }
+                    }
+                    catch (FormatException eror)
+                    {
+                        MessageBox.Show(eror.ToString());
+                    }
 
+                    dataGridView1.DataSource = null;
+                    dataGridView1.Refresh();
+                    dataSet.Clear();
+                    try
+                    {
+
+                        DBCON.insertToDB(Categories, DeleteId, listChenges);
+                        dataGridView1.ReadOnly = true;
+                        dataGridView1.DataSource = null;
+                        dataGridView1.Refresh();
+                    }
+                    catch (SQLiteException eror)
+                    {
+                        MessageBox.Show("Виникла Помилка\n Не використовуйте Апостроф чи подвійний Апостроф\n Якщо вони потрібні поставте перед ними символ «\\»");
+                    }
+
+
+
+                    button2.Visible = true;
+                    button3.Visible = true;
+
+                    button5.Visible = false;
+                }
+            }
+
+           
+          
+        }
         private void dataGridView1_DoubleClick(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedCells.Count > 0 && button5.Visible== false)
@@ -182,45 +239,45 @@ namespace WindowsFormsApp1
             dataGridView1.DataSource = null;
             dataGridView1.Refresh();
 
-            dataSet.Clear();
+            
             dataGridView1.MultiSelect = false;
             dataGridView1.ReadOnly = false;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.CellSelect;
-            
 
-            ObjCommand = new SQLiteCommand("SELECT * FROM Machinery where id = '"+ DeleteId + "'", ObjConnection);
-            ObjCommand.CommandType = CommandType.Text; ObjDataAdapter = new SQLiteDataAdapter(ObjCommand);
-            ObjDataAdapter.Fill(dataSet, "Machinery");
-            DataTable AllTr = dataSet.Tables["Machinery"];
-            dataGridView1.DataSource = AllTr;
-        
+            DBCON.editeDB(Categories, DeleteId);
+
+            if (Categories == 1)
+            {
+                DataTable AllTr = DBCON.dataSet.Tables["Machinery"];
+                dataGridView1.DataSource = AllTr;
+            }
+            else if (Categories == 2)
+            {
+                DataTable AllTr = DBCON.dataSet.Tables["Technic"];
+                dataGridView1.DataSource = AllTr;
+            }
             
-            DeleteIdBUT = 1;
-            ObjConnection.Close();
+        
+
 
         }
 
-   
         private void Delete_Load(object sender, EventArgs e)
         {
-            string connString = string.Format("Data Source={0}", dbPath);
-            ObjConnection = new SQLiteConnection(connString);
-            
+            dataGridView1.DataSource = null;
+            dataGridView1.Refresh();
 
         }
         private void button3_Click(object sender, EventArgs e)
         {
+            button1.Visible = true;
+            button4.Visible = true;
             dataGridView1.DataSource = null;
             dataGridView1.Refresh();
-            dataSet.Clear();
-     
-            ObjCommand = new SQLiteCommand("SELECT Name,Model,Year,Price,id,FildType FROM Technic ORDER BY id DESC", ObjConnection);
-            ObjCommand.CommandType = CommandType.Text; ObjDataAdapter = new SQLiteDataAdapter(ObjCommand);
-            ObjDataAdapter.Fill(dataSet, "Technic");
-            DataTable AllTr = dataSet.Tables["Technic"];
-            dataGridView1.DataSource = AllTr;
-            DeleteIdBUT = 2;
-            ObjConnection.Close();
+            DBCON.getCategories(2);
+            DataTable AllTr = DBCON.dataSet.Tables["Technic"];
+            dataGridView1.DataSource = AllTr;       
+            Categories = 2;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -230,15 +287,10 @@ namespace WindowsFormsApp1
             button4.Visible = true;
             dataGridView1.DataSource = null;
             dataGridView1.Refresh();
-            dataSet.Clear();
-            
-            ObjCommand = new SQLiteCommand("SELECT Name,Model,Year,Price,id,FildType FROM Machinery ORDER BY id DESC", ObjConnection);
-            ObjCommand.CommandType = CommandType.Text; ObjDataAdapter = new SQLiteDataAdapter(ObjCommand);
-            ObjDataAdapter.Fill(dataSet, "Machinery");
-            DataTable AllTr = dataSet.Tables["Machinery"];
-            dataGridView1.DataSource = AllTr;
-            DeleteIdBUT = 1;
-            ObjConnection.Close();
+            DBCON.getCategories(1);
+            DataTable AllTr = DBCON.dataSet.Tables["Machinery"];
+            dataGridView1.DataSource = AllTr;          
+            Categories = 1;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -253,34 +305,18 @@ namespace WindowsFormsApp1
                 string cellValue = Convert.ToString(selectedRow.Cells["id"].Value);
                 DeleteId = int.Parse(cellValue);
             }
-            if (DeleteIdBUT == 1) {
-                ObjCommand = new SQLiteCommand("DELETE from Machinery WHERE id ='" + DeleteId + "'", ObjConnection);
-                ObjCommand.Connection.Open(); ObjCommand.ExecuteNonQuery(); ObjCommand.Connection.Close();
-                ObjCommand = new SQLiteCommand("DELETE FROM HadImgPath WHERE id ='" + DeleteId + "'", ObjConnection);
-                ObjCommand.Connection.Open(); ObjCommand.ExecuteNonQuery(); ObjCommand.Connection.Close();
-                ObjCommand = new SQLiteCommand("DELETE FROM MachinesImg WHERE id ='" + DeleteId + "'", ObjConnection);
-                ObjCommand.Connection.Open(); ObjCommand.ExecuteNonQuery(); ObjCommand.Connection.Close();
+            if (Categories == 1) {
+                DBCON.deleteFromDB(Categories, DeleteId);
                 dataGridView1.DataSource = null;
                 dataGridView1.Refresh();
-                
                 this.Refresh();
-
             }
-            else if(DeleteIdBUT == 2) {
-                ObjCommand = new SQLiteCommand("DELETE FROM Technic WHERE id ='" + DeleteId + "'", ObjConnection);
-                ObjCommand.Connection.Open(); ObjCommand.ExecuteNonQuery(); ObjCommand.Connection.Close();
-                ObjCommand = new SQLiteCommand("DELETE FROM HadImgPathT WHERE id ='" + DeleteId + "'", ObjConnection);
-                ObjCommand.Connection.Open(); ObjCommand.ExecuteNonQuery(); ObjCommand.Connection.Close();
-                ObjCommand = new SQLiteCommand("DELETE FROM TechnicImg WHERE id ='" + DeleteId + "'", ObjConnection);
-                ObjCommand.Connection.Open(); ObjCommand.ExecuteNonQuery(); ObjCommand.Connection.Close();
+            else if(Categories == 2) {
+                DBCON.deleteFromDB(Categories, DeleteId);
                 dataGridView1.DataSource = null;
                 dataGridView1.Refresh();
-             
                 this.Refresh();
-
             }
-
-            ObjConnection.Close();
         }
 
     }

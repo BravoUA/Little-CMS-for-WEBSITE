@@ -9,6 +9,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsFormsApp1;
 
 namespace WindowsFormsApp1
 {
@@ -18,12 +19,17 @@ namespace WindowsFormsApp1
         {
             InitializeComponent();
         }
-        string dbPath = "C:\\AnnalandBD\\ALDB.db";
-        string path = "C:\\AnnalandBD";
+
+        string login;
+        string paswword;
+        string host;
 
         private void button1_Click(object sender, EventArgs e)
         {
             Form1 form = new Form1();
+            form.Login = login;
+            form.Paswword = paswword;
+            form.Host = host;
             form.Show();
         }
 
@@ -35,38 +41,28 @@ namespace WindowsFormsApp1
 
         private void Home_Load(object sender, EventArgs e)
         {
-           
-            if (!Directory.Exists(path)) { DirectoryInfo di = Directory.CreateDirectory(path); }
-            if (!File.Exists(dbPath))
+            string path1 = @"C:\\AnnalandBD\\ALDB.db";
+      
+            try
             {
-                try { 
-                FtpWebRequest request =
-                                         (FtpWebRequest)WebRequest.Create("ftp://sa246943.ftp.tools/ALDB.db");
-                request.Credentials = new NetworkCredential("sa246943_alws", "mNC6Eix648hD");
-                request.Method = WebRequestMethods.Ftp.DownloadFile;
-                    FtpWebResponse response = (FtpWebResponse)request.GetResponse();
-
-                    using (Stream ftpStream = response.GetResponseStream())
-                using (Stream fileStream = File.Create(@"C:\AnnalandBD\ALDB.db"))
+                if (File.Exists(path1))
                 {
-                    ftpStream.CopyTo(fileStream);
-                }
-            }
-                catch (WebException ex) {
-                    String status = ((FtpWebResponse)ex.Response).StatusDescription;
-                    MessageBox.Show(status);
-                    Application.Exit();
-                 
+                    File.Delete(path1);
+
                 }
 
             }
-            
+            catch (IOException er)
+            {
+                MessageBox.Show(er.Message.ToString());
+            }
+
         }
 
         private void Home_FormClosing(object sender, FormClosingEventArgs e)
         {
-            string path1 = @"C:\\AnnalandBD\\ALDB.db";
-            string path2 = @"C:\\AnnalandBD\\oldDB\\ALDB.db";
+            string path1 = @"C:\AnnalandBD\ALDB.db";
+            string path2 = @"C:\AnnalandBD\oldDB\ALDB.db";
            
             try
             {
@@ -75,16 +71,46 @@ namespace WindowsFormsApp1
                     File.Delete(path2);
                     File.Move(path1, path2);
                 }
-                else {
+                else if(File.Exists(path1)) {
+                    
                     File.Move(path1, path2);
                 }
-                    
-
             }
-            catch (IOException er)
-            {
+            catch (IOException er) { 
+            
                 MessageBox.Show(er.Message.ToString());
             }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            login = Login.Text;
+            paswword = Paswword.Text;
+            host = "ftp://"+ Host.Text+"//";
+            ftpConnect ConectFTP = new ftpConnect(login, paswword, host);
+            ConectFTP.LoadDB();
+            if (ConectFTP.stateOfConection)
+            {
+                button1.Visible = true;
+                button2.Visible = true;
+                button3.Visible = false;
+                Login.Visible = false;
+                Paswword.Visible = false;
+                Host.Visible = false;
+                label1.Visible = false;
+                label2.Visible = false;
+                label3.Visible = false;
+                button4.Visible = true;
+            }
+           
+
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            ftpConnect ConectFTP = new ftpConnect(login, paswword, host);
+            ConectFTP.UploadFileDB();
         }
     }
 }
