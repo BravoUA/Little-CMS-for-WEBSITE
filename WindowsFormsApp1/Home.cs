@@ -42,28 +42,24 @@ namespace WindowsFormsApp1
         private void Home_Load(object sender, EventArgs e)
         {
             string path1 = @"C:\\AnnalandBD\\ALDB.db";
-      
             try
             {
                 if (File.Exists(path1))
                 {
                     File.Delete(path1);
-
                 }
-
             }
             catch (IOException er)
             {
                 MessageBox.Show(er.Message.ToString());
             }
-
         }
 
         private void Home_FormClosing(object sender, FormClosingEventArgs e)
         {
             string path1 = @"C:\AnnalandBD\ALDB.db";
             string path2 = @"C:\AnnalandBD\oldDB\ALDB.db";
-           
+            
             try
             {
                 if (File.Exists(path2))

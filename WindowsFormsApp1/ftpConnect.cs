@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Windows.Forms;
+using System.Reflection;
+using System.Diagnostics;
 
 namespace WindowsFormsApp1
 {
@@ -21,7 +23,9 @@ namespace WindowsFormsApp1
         private string dbPathIn = "C:\\AnnalandBD\\ALDB.db";
         private string homePath = "C:\\AnnalandBD";
         private string path = @"C:\AnnalandBD\ALDB.db";
+        private string pathAssemblyFile = "https://www.annaland.com.ua/upUpdate/WindowsFormsApp1.exe";
         public bool stateOfConection = false;
+        private string assemblyVersion="";
 
         public ftpConnect(string log, string pas, string ftpstr) {
             Loggin = log;
@@ -129,6 +133,5 @@ namespace WindowsFormsApp1
             }
             response.Close();
         }
-
     }
 }
