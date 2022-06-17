@@ -21,11 +21,10 @@ namespace WindowsFormsApp1
         }
         string puth;
 
-        SQLiteConnection ObjConnection = new SQLiteConnection("Data Source=ALDB.db;");
-        public SQLiteCommand ObjCommand;
-        public SQLiteDataAdapter ObjDataAdapter;
-        DataSet dataSet = new DataSet();
 
+         public string Login;
+         public string Paswword;
+         public string Host;
 
         string HadImg;
         string HadImgPath;
@@ -33,180 +32,102 @@ namespace WindowsFormsApp1
         string Name, Model, Year, Type, Working_hours, Power, Mass, Text, State;
         int Price, FildType, IDM, Sale, id;
 
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBox3.SelectedIndex == 0) {
+                label5.Visible = true; label6.Visible = true; label7.Visible = true; label8.Visible = true; label9.Visible = true; label10.Visible = true; label11.Visible = true; label12.Visible = true; label13.Visible = true; label14.Visible = true; label15.Visible = true;
+                textBox1.Visible = true; textBox2.Visible = true; textBox3.Visible = true; textBox4.Visible = true; textBox5.Visible = true; textBox6.Visible = true; textBox7.Visible = true; textBox8.Visible = true; textBox10.Visible = true;
+                comboBox1.Visible = true;comboBox2.Visible = true;
+            } else if (comboBox3.SelectedIndex == 1) {
+                label5.Visible = true; label6.Visible = true; label7.Visible = true; label8.Visible = true; label9.Visible = false; label10.Visible = false; label11.Visible = true; label12.Visible = true; label13.Visible = true; label14.Visible = true; label15.Visible = true;
+                textBox1.Visible = true; textBox2.Visible = true; textBox3.Visible = true; textBox4.Visible = true; textBox5.Visible = false; textBox6.Visible = false; textBox7.Visible = true; textBox8.Visible = true; textBox10.Visible = true;
+                comboBox1.Visible = true; comboBox2.Visible = true;
+            }
+        }
+
         string[] ImgName;
         string[] ImgNamePaths;
         ImageList img = new ImageList();
 
-
-
-
-
-
-
+        static string dbPath = "C:\\AnnalandBD\\ALDB.db";
+        ftpConnect ftpConnect;
+        dbConnect dbConnect = new dbConnect(dbPath);
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            ftpConnect = new ftpConnect(Login, Paswword, Host);
+
+            comboBox1.SelectedIndex = 0;
+            comboBox2.SelectedIndex = 0;
             listView1.View = View.Details;
             listView1.Columns.Add("CONTENT IMGES",150);
             listView1.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.HeaderSize);
             this.progressBar1.Maximum = 100;
-
-            /*  FtpWebRequest request =(FtpWebRequest)WebRequest.Create("ftp://sa246943_ftp@sa246943.ftp.tools:21/annaland.test/www/ALDB.db");
-               request.Credentials = new NetworkCredential("sa246943_ftp", "Y35rcK1Z5h");
-               request.Method = WebRequestMethods.Ftp.DownloadFile;
-
-               using (Stream ftpStream = request.GetResponse().GetResponseStream())
-               using (Stream fileStream = File.Create(@"C:\DOOOOOO\ALDB.db"))
-               {
-                   ftpStream.CopyTo(fileStream);
-               }*/
-
-        }
-
-        private FtpWebRequest CreateFtpWebRequest(string ftpDirectoryPath, string userName, string password, bool keepAlive = false)
-        {
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(new Uri(ftpDirectoryPath));
-
-            //Set proxy to null. Under current configuration if this option is not set then the proxy that is used will get an html response from the web content gateway (firewall monitoring system)
-            request.Proxy = null;
-
-            request.UsePassive = true;
-            request.UseBinary = true;
-            request.KeepAlive = keepAlive;
-
-            request.Credentials = new NetworkCredential(userName, password);
-
-            return request;
+   
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            Name = textBox1.Text;Model = textBox2.Text;Year = textBox3.Text;Type = textBox4.Text;Working_hours = textBox5.Text;Power = textBox6.Text;Mass = textBox7.Text;
-            Text = textBox8.Text;State = comboBox2.Text;Price = int.Parse(textBox10.Text);FildType = comboBox1.SelectedIndex +1;
+            List<string> content = new List<string>();
+            if (comboBox3.SelectedIndex == 0) {
+                content.Add(textBox1.Text);     //Nmae
+                content.Add(textBox2.Text);     //Model
+                content.Add(textBox3.Text);     //Year
+                content.Add(textBox4.Text);     //Type
+                content.Add(textBox5.Text);     //Working_hours
+                content.Add(textBox6.Text);     //Power
+                content.Add(textBox7.Text);     //Mass
+                content.Add(textBox8.Text);     //Text
+                content.Add(comboBox2.Text);    //State
+                content.Add(textBox10.Text);    //Price
+                content.Add((comboBox1.SelectedIndex + 1).ToString());  //FildType
 
-            ObjCommand = new SQLiteCommand("SELECT id FROM Machinery ORDER BY id DESC LIMIT 1", ObjConnection);
-            ObjCommand.CommandType = CommandType.Text;ObjDataAdapter = new SQLiteDataAdapter(ObjCommand);
-            ObjDataAdapter.Fill(dataSet, "id");
-            string A = dataSet.Tables["id"].Rows[0][0].ToString();
-            id = 1 + int.Parse(A);
-            
+                List<string> IMGSPath = new List<string>();
+                string[] webimgpath = {"/img/HadImg/" + HadImg ,  HadImg  };
+                    for (int i = 0; i < ImgName.Length; i++)
+                    {
+                        IMGSPath.Add("/img/imges/" + ImgName[i]);
+                    }
+                dbConnect.CreateNew(1, content,webimgpath,IMGSPath, ImgName);
 
-            dataSet.Clear();
-            ObjCommand = new SQLiteCommand("SELECT ID FROM NameofFirm where Name like'"+ Name + "'", ObjConnection);
-            ObjCommand.CommandType = CommandType.Text;ObjDataAdapter = new SQLiteDataAdapter(ObjCommand);
-            ObjDataAdapter.Fill(dataSet, "ID");
+                string[] webimgpath2 = { HadImgPath, HadImg };
 
-            if (dataSet.Tables["ID"].Rows.Count != 0)
-            {
-                IDM = int.Parse(dataSet.Tables["ID"].Rows[0][0].ToString());
-            }
-            else {
-                dataSet.Clear();
-                ObjCommand = new SQLiteCommand("SELECT ID FROM NameofFirm ORDER BY ID DESC LIMIT 1", ObjConnection);
-                ObjCommand.CommandType = CommandType.Text;ObjDataAdapter = new SQLiteDataAdapter(ObjCommand);
-                ObjDataAdapter.Fill(dataSet, "ID");
+              //  ftpConnect.UploadFilesIMG(webimgpath2, ImgNamePaths, ImgName);
 
-                int ID, idv = 0;
+                textBox1.Text = ""; textBox2.Text = ""; textBox3.Text = ""; textBox4.Text = ""; textBox5.Text = ""; textBox6.Text = ""; textBox7.Text = ""; textBox8.Text = ""; comboBox1.Text = ""; comboBox2.Text = ""; textBox10.Text = ""; listView1.Clear();
+                MessageBox.Show("upload is complete");
+                this.Close();
+            } else
+            if (comboBox3.SelectedIndex == 1) {
 
-                ID = 1 + int.Parse(dataSet.Tables["ID"].Rows[0][0].ToString());
-                ObjCommand = new SQLiteCommand("INSERT INTO NameofFirm VALUES('" + Name + "','" + ID + "','" + idv + "')", ObjConnection);
-                ObjCommand.Connection.Open();ObjCommand.ExecuteNonQuery();ObjCommand.Connection.Close();
+                content.Add(textBox1.Text);     //Nmae
+                content.Add(textBox2.Text);     //Model
+                content.Add(textBox3.Text);     //Year
+                content.Add(textBox4.Text);     //Type
+                content.Add(textBox7.Text);     //Mass
+                content.Add(textBox8.Text);     //Text
+                content.Add(comboBox2.Text);    //State
+                content.Add(textBox10.Text);    //Price
+                content.Add((comboBox1.SelectedIndex + 1).ToString());  //FildType
 
-                IDM = ID;
-            }
-
-            ObjCommand = new SQLiteCommand("INSERT INTO Machinery VALUES('" + Name + "','" + Model + "','" + Year + "','" + Type + "','" + Working_hours + "','" + Power + "','" + Mass + "','" + Text + "','" + State + "','" + Price + "','" + FildType + "','" + IDM + "',' 0','" + id + "')", ObjConnection);
-            ObjCommand.Connection.Open();ObjCommand.ExecuteNonQuery();ObjCommand.Connection.Close();
-            progressBar1.Value = 30;
-
-            try
-            {
-
-                 FtpWebRequest req = (FtpWebRequest)WebRequest.Create("ftp://sa246943_ftp@sa246943.ftp.tools:21/annaland.test/www/img/HadImg/"+HadImg);
-                 req.UseBinary = true;
-                 req.Method = WebRequestMethods.Ftp.UploadFile;
-                 req.Credentials = new NetworkCredential("sa246943_ftp", "Y35rcK1Z5h");
-                // StreamReader rdr = new StreamReader(sFileName);
-                 byte[] fileData = File.ReadAllBytes(HadImgPath);
-
-                // rdr.Close();
-                 req.ContentLength = fileData.Length;
-                 Stream reqStream = req.GetRequestStream();
-                 reqStream.Write(fileData, 0, fileData.Length);
-                 reqStream.Close();
-
-                string webimgpath = "/img/HadImg/" + HadImg;
-
-                dataSet.Clear();
-                ObjCommand = new SQLiteCommand("SELECT id FROM HadImgPath ORDER BY id DESC LIMIT 1", ObjConnection);
-                ObjCommand.CommandType = CommandType.Text; ObjDataAdapter = new SQLiteDataAdapter(ObjCommand);
-                ObjDataAdapter.Fill(dataSet, "id");
-
-                int id = 1 + int.Parse(dataSet.Tables["id"].Rows[0][0].ToString());
-
-                ObjCommand = new SQLiteCommand("INSERT INTO HadImgPath VALUES('" + webimgpath + "','" + id + "','" + HadImg + "','0')", ObjConnection);
-                ObjCommand.Connection.Open(); ObjCommand.ExecuteNonQuery(); ObjCommand.Connection.Close();
-                progressBar1.Value = 60;
-                for (int i = 0; i < ImgName.Length;i++) {
-                    
-                    req = (FtpWebRequest)WebRequest.Create("ftp://sa246943_ftp@sa246943.ftp.tools:21/annaland.test/www/img/imges/" + ImgName[i]);
-                    req.UseBinary = true;
-                    req.Method = WebRequestMethods.Ftp.UploadFile;
-                    req.Credentials = new NetworkCredential("sa246943_ftp", "Y35rcK1Z5h");
-                    // StreamReader rdr = new StreamReader(sFileName);
-                    fileData = File.ReadAllBytes(ImgNamePaths[i]);
-                    // rdr.Close();
-                    req.ContentLength = fileData.Length;
-                    reqStream = req.GetRequestStream();
-                    reqStream.Write(fileData, 0, fileData.Length);
-                    reqStream.Close();
-
-                    webimgpath = "/img/imges/" + ImgName[i];
-
-                    dataSet.Clear();
-                    ObjCommand = new SQLiteCommand("SELECT id FROM MachinesImg ORDER BY id DESC LIMIT 1", ObjConnection);
-                    ObjCommand.CommandType = CommandType.Text; ObjDataAdapter = new SQLiteDataAdapter(ObjCommand);
-                    ObjDataAdapter.Fill(dataSet, "id");
-
-                    id = 1 + int.Parse(dataSet.Tables["id"].Rows[0][0].ToString());
-
-                    ObjCommand = new SQLiteCommand("INSERT INTO MachinesImg VALUES('" + webimgpath + "','" + id + "','" + ImgName[i] + "','0')", ObjConnection);
-                    ObjCommand.Connection.Open(); ObjCommand.ExecuteNonQuery(); ObjCommand.Connection.Close();
+                List<string> IMGSPath = new List<string>();
+                string[] webimgpath = { "/img/HadImg/" + HadImg, HadImg };
+                for (int i = 0; i < ImgName.Length; i++)
+                {
+                    IMGSPath.Add("/img/imges/" + ImgName[i]);
                 }
-                progressBar1.Value = 90;
+                dbConnect.CreateNew(2, content, webimgpath, IMGSPath, ImgName);
 
-                /*   FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://sa246943_ftp@sa246943.ftp.tools:21/annaland.test/www/");
+                string[] webimgpath2 = { HadImgPath, HadImg };
+                ftpConnect.UploadFilesIMG(webimgpath2, ImgNamePaths, ImgName);
 
-                   request.Method = WebRequestMethods.Ftp.UploadFile;
-                   request.Credentials = new NetworkCredential("sa246943_ftp", "Y35rcK1Z5h");
-                   // Copy the contents of the file to the request stream.  
-                   StreamReader sourceStream = new StreamReader(sFileName);
-                   byte[] fileContents = File.ReadAllBytes(sFileName);
-                   sourceStream.Close();
-                   request.ContentLength = fileContents.Length;
-                   Stream requestStream = request.GetRequestStream();
-                   requestStream.Write(fileContents, 0, fileContents.Length);
-                   requestStream.Close();
-                   FtpWebResponse response = (FtpWebResponse)request.GetResponse();
-                   label1.Text = ("Upload File Complete, status {0}" + response.StatusDescription).ToString();
+                textBox1.Text = ""; textBox2.Text = ""; textBox3.Text = ""; textBox4.Text = ""; textBox5.Text = ""; textBox6.Text = ""; textBox7.Text = ""; textBox8.Text = ""; comboBox1.Text = ""; comboBox2.Text = ""; textBox10.Text = ""; listView1.Clear();
+                progressBar1.Value = 100;
 
-                   response.Close();*/
+                MessageBox.Show("upload is complete");
+                this.Close();
             }
-            catch (WebException et)
-            {
-              /*  label1.Text = et.Message.ToString();
-                String status = ((FtpWebResponse)et.Response).StatusDescription;
-                label2.Text = status;*/
-            }
-            catch (Exception ex)
-            {
-                label1.Text = ex.Message.ToString();
-            }
-            textBox1.Text = "";textBox2.Text = "";textBox3.Text = "";textBox4.Text = "";textBox5.Text = "";textBox6.Text = "";textBox7.Text = "";textBox8.Text = "";comboBox1.Text = "";comboBox2.Text = "";textBox10.Text = "";listView1.Clear();
-            progressBar1.Value = 100;
-
-
+           
         }
-
         private void button2_Click(object sender, EventArgs e)
         {
             MessageBox.Show("IMG Resolution mast be 330x270");
@@ -228,7 +149,6 @@ namespace WindowsFormsApp1
 
 
         }
-
         private void button3_Click(object sender, EventArgs e)
         {
             OpenFileDialog choofdlog = new OpenFileDialog();
