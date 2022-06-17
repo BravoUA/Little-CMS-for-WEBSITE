@@ -120,7 +120,7 @@ namespace WindowsFormsApp1
                 }
                 else if (Categories == 2)
                 {
-                    ObjCommand = new SQLiteCommand("INSERT OR REPLACE INTO Technic (Name, Model, Year, Type, Mass, Text, State, Price, FildType, IDM, Sale, id) VALUES('" + info[0] + "','" + info[1] + "','" + info[2] + "','" + info[3] + "','" + info[4] + "','" + info[5] + "','" + info[6] + "','" + info[7] + "','" + info[8] + "','" + info[9] + "'," + info[10] + ",'" + info[11] + "')", ObjConnection);
+                    ObjCommand = new SQLiteCommand("INSERT OR REPLACE INTO Technic (Name, Model, Year, Type, Mass, Text, State, Price, FildType, IDT, Sale, id) VALUES('" + info[0] + "','" + info[1] + "','" + info[2] + "','" + info[3] + "','" + info[4] + "','" + info[5] + "','" + info[6] + "','" + info[7] + "','" + info[8] + "','" + info[9] + "'," + info[10] + ",'" + info[11] + "')", ObjConnection);
                     ObjCommand.Connection.Open(); ObjCommand.ExecuteNonQuery(); ObjCommand.Connection.Close(); ObjCommand.Dispose();
                 }
             }
@@ -286,6 +286,35 @@ namespace WindowsFormsApp1
                 {
                     dataSet.Clear();
                     ObjCommand = new SQLiteCommand("SELECT Name,Model,Year,Price,id,FildType FROM Technic where Name like '" + Name + "%' ORDER BY id DESC", ObjConnection);
+                    ObjCommand.CommandType = CommandType.Text; ObjDataAdapter = new SQLiteDataAdapter(ObjCommand);
+                    ObjDataAdapter.Fill(dataSet, "Technic");
+                    ObjCommand.Dispose();
+                }
+            }
+        }
+        public void FindByType(string Type, int Categories)
+        {
+
+            string connString = string.Format("Data Source={0}", dbPath);
+            using (ObjConnection = new SQLiteConnection(connString))
+            {
+                if (Categories == 1)
+                {
+                    dataSet.Clear();
+                    int TypeT = 1 + int.Parse(Type);
+                    ObjCommand = new SQLiteCommand("SELECT Name,Model,Year,Price,id,FildType FROM Machinery where FildType like '" + TypeT + "%'  ORDER BY id DESC", ObjConnection);
+                    ObjCommand.CommandType = CommandType.Text;
+                    ObjDataAdapter = new SQLiteDataAdapter(ObjCommand);
+                    ObjDataAdapter.Fill(dataSet, "Machinery");
+                    ObjCommand.Dispose();
+
+
+                }
+                else if (Categories == 2)
+                {
+                    dataSet.Clear();
+                    int TypeT = 4 + int.Parse(Type);
+                    ObjCommand = new SQLiteCommand("SELECT Name,Model,Year,Price,id,FildType FROM Technic where FildType like '" + TypeT + "%' ORDER BY id DESC", ObjConnection);
                     ObjCommand.CommandType = CommandType.Text; ObjDataAdapter = new SQLiteDataAdapter(ObjCommand);
                     ObjDataAdapter.Fill(dataSet, "Technic");
                     ObjCommand.Dispose();

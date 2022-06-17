@@ -74,7 +74,7 @@ namespace WindowsFormsApp1
             }
             catch (IOException er) { 
             
-                MessageBox.Show(er.Message.ToString());
+              //  MessageBox.Show(er.Message.ToString());
             }
         }
 

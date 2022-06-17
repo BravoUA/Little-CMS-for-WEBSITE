@@ -31,10 +31,31 @@ namespace WindowsFormsApp1
         string HadImg;
         string HadImgPath;
         int Categories = 0;
-
+       public DataTable AllTr;
         string Name, Model, Year, Type, Working_hours, Power, Mass, Text, State;
 
         int Price, FildType, IDM, Sale, id, DeleteId , DeleteIdBUT;
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            dataGridView1.DataSource = null;
+            dataGridView1.Refresh();
+            DBCON.FindByType(comboBox1.SelectedIndex.ToString(), Categories);
+            if (Categories == 1)
+            {
+                DataTable AllTr = DBCON.dataSet.Tables["Machinery"];
+                dataGridView1.DataSource = AllTr;
+
+            }
+            else if (Categories == 2)
+            {
+                DataTable AllTr = DBCON.dataSet.Tables["Technic"];
+
+                dataGridView1.DataSource = AllTr;
+
+            }
+        }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
@@ -227,14 +248,9 @@ namespace WindowsFormsApp1
 
         private void button4_Click(object sender, EventArgs e)
         {
-
-
-           
-
-            
-
-           
+    
             Edite EditForm = new Edite();
+
             if (Categories == 1)
             {
                 if (dataGridView1.SelectedCells.Count > 0)
@@ -255,9 +271,20 @@ namespace WindowsFormsApp1
             }
             else if (Categories == 2)
             {
+                if (dataGridView1.SelectedCells.Count > 0)
+                {
+                    int selectedrowindex = dataGridView1.SelectedCells[0].RowIndex;
+                    DataGridViewRow selectedRow = dataGridView1.Rows[selectedrowindex];
+                    string cellValue = Convert.ToString(selectedRow.Cells["id"].Value);
+                    DeleteId = int.Parse(cellValue);
+                }
+                DBCON.editeDB(Categories, DeleteId);
+
                 EditForm.DS = DBCON.dataSet;
                 EditForm.Categories = Categories;
+                DBCON.dataSet.Dispose();
                 EditForm.Show();
+                this.Close();
             }
             
         
@@ -281,6 +308,10 @@ namespace WindowsFormsApp1
             DataTable AllTr = DBCON.dataSet.Tables["Technic"];
             dataGridView1.DataSource = AllTr;       
             Categories = 2;
+
+            string[] installs = new string[] { "Картопляна техніка", "Техніка для обробка грунту", "Посівна та садильна техніка", "Техніка для внесення добрив", "Інша техніка"};
+            comboBox1.Items.Clear();
+            comboBox1.Items.AddRange(installs);
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -291,10 +322,13 @@ namespace WindowsFormsApp1
             dataGridView1.DataSource = null;
             dataGridView1.Refresh();
             DBCON.getCategories(1);
-            DataTable AllTr = DBCON.dataSet.Tables["Machinery"];
+            AllTr = DBCON.dataSet.Tables["Machinery"];
             dataGridView1.DataSource = AllTr;          
             Categories = 1;
-        }
+            string[] installs = new string[] { "Трактори", "Спецтехніка" };
+            comboBox1.Items.Clear();
+            comboBox1.Items.AddRange(installs);
+                }
 
         private void button1_Click(object sender, EventArgs e)
         {

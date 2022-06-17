@@ -104,7 +104,7 @@ namespace WindowsFormsApp1
             this.Login.Name = "Login";
             this.Login.Size = new System.Drawing.Size(211, 20);
             this.Login.TabIndex = 5;
-            this.Login.Text = "sa246943_test";
+            this.Login.Text = "sa246943_alws";
             // 
             // Paswword
             // 
@@ -112,7 +112,7 @@ namespace WindowsFormsApp1
             this.Paswword.Name = "Paswword";
             this.Paswword.Size = new System.Drawing.Size(211, 20);
             this.Paswword.TabIndex = 6;
-            this.Paswword.Text = "jvr3EB6P8sU2";
+            this.Paswword.Text = "mNC6Eix648hD";
             // 
             // Host
             // 
