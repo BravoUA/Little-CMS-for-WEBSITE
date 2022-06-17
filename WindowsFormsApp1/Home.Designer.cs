@@ -104,7 +104,6 @@ namespace WindowsFormsApp1
             this.Login.Name = "Login";
             this.Login.Size = new System.Drawing.Size(211, 20);
             this.Login.TabIndex = 5;
-            this.Login.Text = "sa246943_alws";
             // 
             // Paswword
             // 
@@ -112,7 +111,6 @@ namespace WindowsFormsApp1
             this.Paswword.Name = "Paswword";
             this.Paswword.Size = new System.Drawing.Size(211, 20);
             this.Paswword.TabIndex = 6;
-            this.Paswword.Text = "mNC6Eix648hD";
             // 
             // Host
             // 
@@ -120,7 +118,6 @@ namespace WindowsFormsApp1
             this.Host.Name = "Host";
             this.Host.Size = new System.Drawing.Size(211, 20);
             this.Host.TabIndex = 7;
-            this.Host.Text = "sa246943.ftp.tools";
             // 
             // button3
             // 
